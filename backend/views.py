@@ -6,6 +6,9 @@ from rest_framework.decorators import api_view, parser_classes
 from rest_framework import status
 from backend.models import Keywords, Users, UserKeyword, UserArticle
 import ast
+from ProcessData import ProcessData
+
+processData = ProcessData()
 
 @api_view(['POST'])
 def add_user(request):
@@ -41,6 +44,14 @@ def add_keyword(request, user_id):
             saved_keyword = Keywords.objects.create(name=keyword)
             saved_userkeyword = UserKeyword.objects.create(user=user, keyword=saved_keyword, isActive=True)
         return Response({"message": "Keyword added successfully"}, status=status.HTTP_200_OK)
+    
+@api_view(['POST'])
+def update_database(request):
+    if request.method == 'POST':
+        processData = ProcessData()
+        processData.update_database()
+        result = processData.run()
+        print(result)
 
         
 
