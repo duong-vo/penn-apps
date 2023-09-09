@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'backend',
+    'django_extensions',
+
 ]
 
 MIDDLEWARE = [
@@ -82,9 +84,9 @@ WSGI_APPLICATION = 'pennapps.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv("POSTGRESQL_DATABASE_NAME"),
-        'USER': os.getenv('POSTGRESQL_USER_NAME'),
-        'PASSWORD': os.getenv('POSTGRESQL_PASSWORD'),
+        'NAME': os.getenv('POSTGRESQL_DATABASE_NAME'),
+        'USER': os.getenv("POSTGRESQL_USER_NAME"),
+        'PASSWORD': os.getenv("POSTGRESQL_PASSWORD"),
         'HOST': 'localhost',
         'PORT': '',
     }
