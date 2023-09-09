@@ -21,6 +21,6 @@ from backend import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/add', views.add_user),
-    path('user/add_keyword', views.add_keyword),
-    path('user/<int:user_id>/articles/', views.user_articles, name='user_articles'),
+    path('user/<int:user_id>/add_keyword', views.add_keyword),
+    path('user/<int:user_id>/articles', views.user_articles, name='user_articles'),
 ]
