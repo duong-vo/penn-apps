@@ -6,7 +6,7 @@ from backend.models import Keywords, Users, UserKeyword, UserArticle, Articles
 from backend.serializers import ArticlesSerializer
 from django.http.response import JsonResponse
 import ast
-from ProcessData import ProcessData
+from backend.ProcessData import ProcessData
 
 processData = ProcessData()
 
@@ -51,6 +51,8 @@ def update_database(request):
         processData.update_database()
         result = processData.run()
         print(result)
+    return Response({"message": "Updated successfully"}, status=status.HTTP_200_OK)
+
 
 @api_view(['GET'])
 def user_articles(request, user_id):

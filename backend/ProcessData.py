@@ -8,6 +8,9 @@ from metaphor_python import Metaphor
 from dotenv import load_dotenv
 import os
 
+from rest_framework.response import Response
+from rest_framework import status
+
 load_dotenv()
 
 class ProcessData:
@@ -25,8 +28,7 @@ class ProcessData:
             use_autoprompt=True,
             type="keyword",
             )
-        print(response)
-        return response
+        return response.get_contents().contents
     
     def update_database(self):
         self.fetch_keyword_from_database()
@@ -37,13 +39,14 @@ class ProcessData:
             articles = self.metaphor_search(cur_keyword.name)
 
             for article in articles:
-                try:
-                    existing_article = Articles.objects.get(url=article.url)
-                except Articles.DoesNotExist:
-                    new_article = Articles(url=article.url, title=article.title, author=article.author)
+                if not Articles.objects.filter(url=article.url).exists():
+                    title = article.title if article.title else None
+                    new_article = Articles(url=article.url, title=article.title)
                     new_article.save()
                     for user in users_with_activated_keyword:
                         UserArticle.objects.create(user=user,article=new_article, hasSeen=False)
+        
+        
 
     def run(self):
         unseen_article = UserArticle.objects.filter(hasSeen=False).select_related()
@@ -57,6 +60,3 @@ class ProcessData:
         
         return user_article_dict
         
-processData = ProcessData()
-# processData.update_database()
-processData.run()
