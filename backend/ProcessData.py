@@ -1,6 +1,6 @@
 # ProcessData.py
-import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "pennapps.settings")
+# import os
+# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "pennapps.settings")
 
 from collections import deque, defaultdict
 from backend.models import UserKeyword, Keywords, Articles, Users, UserArticle
@@ -54,8 +54,9 @@ class ProcessData:
 
         for user_article in unseen_user_article:
             user_article_dict[user_article.user].append(user_article.article)
+        
         return user_article_dict
         
 processData = ProcessData()
-processData.update_database()
+# processData.update_database()
 processData.run()

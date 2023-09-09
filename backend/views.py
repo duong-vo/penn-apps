@@ -6,6 +6,9 @@ from backend.models import Keywords, Users, UserKeyword, UserArticle, Articles
 from backend.serializers import ArticlesSerializer
 from django.http.response import JsonResponse
 import ast
+from ProcessData import ProcessData
+
+processData = ProcessData()
 
 @api_view(['POST'])
 def add_user(request):
@@ -40,6 +43,14 @@ def add_keyword(request, user_id):
             saved_keyword = Keywords.objects.create(name=keyword)
             saved_userkeyword = UserKeyword.objects.create(user=user, keyword=saved_keyword, isActive=True)
         return Response({"message": "Keyword added successfully"}, status=status.HTTP_200_OK)
+    
+@api_view(['POST'])
+def update_database(request):
+    if request.method == 'POST':
+        processData = ProcessData()
+        processData.update_database()
+        result = processData.run()
+        print(result)
 
 @api_view(['GET'])
 def user_articles(request, user_id):
