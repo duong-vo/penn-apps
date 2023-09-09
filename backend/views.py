@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view, parser_classes
 from rest_framework import status
 from backend.models import Keywords, Users, UserKeyword, UserArticle
 import ast
-from ProcessData import ProcessData
+from backend.ProcessData import ProcessData
 
 processData = ProcessData()
 
@@ -53,7 +53,7 @@ def update_database(request):
         result = processData.run()
         print(result)
 
-        
+    return Response({"message": "Updated successfully"}, status=status.HTTP_200_OK)        
 
 
 def user_articles(request, user_id):
