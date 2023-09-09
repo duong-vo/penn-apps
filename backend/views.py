@@ -1,9 +1,8 @@
-from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.parsers import JSONParser
+
 from rest_framework import status
 from backend.models import Keywords, Users, UserKeyword
-from backend.serializers import TodoSerializer
-from backend.ProcessData import ProcessData
 
 def add_user(request):
     if request.method == 'POST':
@@ -25,7 +24,15 @@ def add_user(request):
 
 def add_keyword(request):
     if request.method == 'POST':
-        keyword
+        keyword_data = JSONParser().parse(request)
+        keyword, uid = keyword_data['keyword', 'user_id']
+
         keyword = keyword.strip().lower()
-        if not Keywords.objects.
+        user = Users.objects.get(id=uid)
+        if not Keywords.objects.filter(name=keyword).exists():
+            saved_keyword = Keywords.objects.create(name=keyword)
+        else:
+            saved_keyword = list(Keywords.objects.create(user=user, keyword=keyword, isActive=True))
+        
+
 
