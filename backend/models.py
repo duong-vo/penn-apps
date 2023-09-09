@@ -3,8 +3,8 @@ from django.db import models
 # Create your models here.
 class Users(models.Model):
     id = models.AutoField(primary_key=True)
-    firstname = models.CharField(128)
-    lastname = models.CharField(128)
+    firstname = models.CharField(max_length=128)
+    lastname = models.CharField(max_length=128)
     email = models.EmailField()
 
 class Keywords(models.Model):
