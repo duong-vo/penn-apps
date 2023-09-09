@@ -3,6 +3,8 @@ from django.db import models
 # Create your models here.
 class Users(models.Model):
     id = models.AutoField(primary_key=True)
+    firstname = models.CharField(128)
+    lastname = models.CharField(128)
     email = models.EmailField()
 
 class Keywords(models.Model):
@@ -18,6 +20,8 @@ class UserKeyword(models.Model):
 class Articles(models.Model):
     id = models.AutoField(primary_key=True)
     url = models.URLField(unique=True)
+    title = models.CharField(max_length=255)
+    author = models.CharField(max_length=128)
 
 class KeywordArticle(models.Model):
     id = models.AutoField(primary_key=True)
