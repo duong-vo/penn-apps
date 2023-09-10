@@ -20,8 +20,7 @@ class UserKeyword(models.Model):
 class Articles(models.Model):
     id = models.AutoField(primary_key=True)
     url = models.URLField(unique=True)
-    title = models.CharField(max_length=255)
-    author = models.CharField(max_length=128)
+    title = models.CharField(max_length=255, null=True, blank=True)
 
 class KeywordArticle(models.Model):
     id = models.AutoField(primary_key=True)

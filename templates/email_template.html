@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latest Articles</title>
+</head>
+<body>
+    <div style="font-family: Arial, sans-serif; padding: 20px;">
+        <h1>Latest Articles</h1>
+
+        <ul>
+            {% for article in articles %}
+                <li>
+                    <a href="{{ article.url }}" style="text-decoration: none; color: #0078d4;">{{ article.title }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <p>Thank you for using our article notifier service.</p>
+    </div>
+</body>
+</html>
+
