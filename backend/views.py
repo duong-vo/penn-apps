@@ -3,10 +3,12 @@ from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework import status
 from backend.models import Keywords, Users, UserKeyword, UserArticle, Articles
-from backend.serializers import ArticlesSerializer
+from backend.serializers import ArticlesSerializer, UserArticleSerializer
 from django.http.response import JsonResponse
 import ast
 from backend.ProcessData import ProcessData
+from services.email_service import EmailService
+from collections import defaultdict
 
 processData = ProcessData()
 
@@ -19,7 +21,6 @@ def add_user(request):
         saved_user = Users.objects.create(firstname=fname, lastname=lname, email=email)
 
         keywords = ast.literal_eval(request.data['keywords'])
-        
 
         for keyword in keywords:
             print(keyword)
@@ -50,7 +51,15 @@ def update_database(request):
         processData = ProcessData()
         processData.update_database()
         result = processData.run()
-        print(result)
+        # query article
+        user_art_dict = defaultdict(lambda: [])
+        user_articles = UserArticle.objects.filter(hasSeen=False)
+        for user_article in user_articles:
+            user_art_dict[user_article.user].append(user_article.article)
+        for user, articles in user_art_dict.items():
+            print('user', user)
+            email_ser = EmailService(user.email,'test',articles)
+            email_ser.send()
     return Response({"message": "Updated successfully"}, status=status.HTTP_200_OK)
 
 

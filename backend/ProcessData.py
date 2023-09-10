@@ -7,7 +7,6 @@ from backend.models import UserKeyword, Keywords, Articles, Users, UserArticle
 from metaphor_python import Metaphor
 from dotenv import load_dotenv
 import os
-
 from rest_framework.response import Response
 from rest_framework import status
 
