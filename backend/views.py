@@ -44,6 +44,16 @@ def add_keyword(request, user_id):
             saved_keyword = Keywords.objects.create(name=keyword)
             saved_userkeyword = UserKeyword.objects.create(user=user, keyword=saved_keyword, isActive=True)
         return Response({"message": "Keyword added successfully"}, status=status.HTTP_200_OK)
+
+@api_view(['PUT'])
+def delete_keyword(request, user_id, keyword_id):
+    if request.method == 'PUT':
+        user_keyword = UserKeyword.objects.get(user_id=user_id, keyword_id=keyword_id)
+        user_keyword.isActive = False
+        user_keyword.save()
+        return Response({"message": "Keyword deleted successfully"}, status=status.HTTP_200_OK)
+
+
     
 @api_view(['POST'])
 def update_database(request):
@@ -62,7 +72,6 @@ def send_email(request):
         for user_article in user_articles:
             user_art_dict[user_article.user].append(user_article.article)
             for user, articles in user_art_dict.items():
-                print('user', user)
                 email_ser = EmailService(user.email,'test',articles)
                 email_ser.send()
     return Response({"message": "Sent email successfully"}, status=status.HTTP_200_OK)

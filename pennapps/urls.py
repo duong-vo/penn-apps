@@ -25,4 +25,5 @@ urlpatterns = [
     path('user/<int:user_id>/articles', views.user_articles, name='user_articles'),
     path('user/update_database', views.update_database),
     path('user/send_email', views.send_email),
+    path('user/<int:user_id>/keywords/<int:keyword_id>/delete', views.delete_keyword),
 ]
