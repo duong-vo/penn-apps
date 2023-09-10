@@ -21,7 +21,10 @@ from backend import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/add', views.add_user),
-    path('user/<int:user_id>/add_keyword', views.add_keyword),
-    path('user/<int:user_id>/articles', views.user_articles, name='user_articles'),
-    path('user/update_database', views.update_database)
+    path('user/<str:user_id>/add_keyword', views.add_keyword),
+    path('user/<str:user_id>/articles', views.user_articles, name='user_articles'),
+    path('user/update_database', views.update_database), # update new articles into database
+    path('user/send_email', views.send_email),
+    path('user/<str:user_id>/keywords/<int:keyword_id>/delete', views.delete_keyword),
+    path('user/<str:user_id>/keywords', views.get_keywords),
 ]
