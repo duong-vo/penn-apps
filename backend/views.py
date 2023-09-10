@@ -62,7 +62,6 @@ def update_database(request):
             email_ser.send()
     return Response({"message": "Updated successfully"}, status=status.HTTP_200_OK)
 
-
 @api_view(['GET'])
 def user_articles(request, user_id):
     user = Users.objects.get(pk=user_id)
