@@ -55,7 +55,6 @@ def update_database(request):
 
     return Response({"message": "Updated successfully"}, status=status.HTTP_200_OK)        
 
-
 def user_articles(request, user_id):
     # Get the user object based on the user_id
     user = Users.objects.get(pk=user_id)
