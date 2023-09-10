@@ -23,5 +23,6 @@ urlpatterns = [
     path('user/add', views.add_user),
     path('user/<int:user_id>/add_keyword', views.add_keyword),
     path('user/<int:user_id>/articles', views.user_articles, name='user_articles'),
-    path('user/update_database', views.update_database)
+    path('user/update_database', views.update_database),
+    path('user/send_email', views.send_email),
 ]

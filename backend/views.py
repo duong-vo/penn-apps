@@ -51,16 +51,22 @@ def update_database(request):
         processData = ProcessData()
         processData.update_database()
         result = processData.run()
-        # query article
+    return Response({"message": "Updated successfully"}, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def send_email(request):
+    # query article
+    if request.method == 'POST':
         user_art_dict = defaultdict(lambda: [])
-        user_articles = UserArticle.objects.filter(hasSeen=False)
+        user_articles = UserArticle.objects.filter(hasSeen=True)
         for user_article in user_articles:
             user_art_dict[user_article.user].append(user_article.article)
-        for user, articles in user_art_dict.items():
-            print('user', user)
-            email_ser = EmailService(user.email,'test',articles)
-            email_ser.send()
-    return Response({"message": "Updated successfully"}, status=status.HTTP_200_OK)
+            for user, articles in user_art_dict.items():
+                print('user', user)
+                email_ser = EmailService(user.email,'test',articles)
+                email_ser.send()
+    return Response({"message": "Sent email successfully"}, status=status.HTTP_200_OK)
+
 
 @api_view(['GET'])
 def user_articles(request, user_id):
