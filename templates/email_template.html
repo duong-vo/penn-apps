@@ -12,9 +12,13 @@
 
         <ul>
             {% for article in articles %}
-                <li>
-                    <a href="{{ article.url }}" style="text-decoration: none; color: #0078d4;">{{ article.title }}</a>
-                </li>
+            <li>
+                <a href="{{ article.url }}" style="text-decoration: none; color: #0078d4;">
+                    {% with title=article.title %}
+                        {{ title|default:"Default Title" }}
+                    {% endwith %}
+                </a>
+            </li>
             {% endfor %}
         </ul>
 

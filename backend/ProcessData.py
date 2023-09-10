@@ -40,16 +40,17 @@ class ProcessData:
             users_with_activated_keyword = Users.objects.filter(userkeyword__keyword__name=cur_keyword.name, userkeyword__isActive=True)
             print(f'date: {past_time.strftime("%Y-%m-%d")}')
             print('name = ', cur_keyword.name)
-            articles = self.metaphor_search(cur_keyword.name)
-            print('GOT HERE')
-            for article in articles:
-                if not Articles.objects.filter(url=article.url).exists():
-                    title = article.title if article.title else None
-                    new_article = Articles(url=article.url, title=article.title)
-                    new_article.save()
-                    for user in users_with_activated_keyword:
-                        UserArticle.objects.create(user=user,article=new_article, hasSeen=False)
-
+            try:
+                articles = self.metaphor_search(cur_keyword.name)
+                for article in articles:
+                    if not Articles.objects.filter(url=article.url).exists():
+                        title = article.title if article.title else None
+                        new_article = Articles(url=article.url, title=article.title)
+                        new_article.save()
+                        for user in users_with_activated_keyword:
+                            UserArticle.objects.create(user=user,article=new_article, hasSeen=False)
+            except Exception as e:
+                print(f'ERROR {e}, skipping')
 
 
     def run(self):
@@ -61,6 +62,6 @@ class ProcessData:
 
         for user_article in unseen_user_article:
             user_article_dict[user_article.user].append(user_article.article)
-        
+
         return user_article_dict
-        
+

@@ -20,9 +20,7 @@ def add_user(request):
         fname, lname = request.data['firstname'], request.data['lastname']
         email = request.data['email']
         saved_user = Users.objects.create(id=uid,firstname=fname, lastname=lname, email=email)
-
         keywords = ast.literal_eval(request.data['keywords'])
-
         for keyword in keywords:
             print(keyword)
             keyword = keyword.strip().lower()
@@ -80,10 +78,11 @@ def send_email(request):
     # query article
     if request.method == 'POST':
         user_art_dict = defaultdict(lambda: [])
-        user_articles = UserArticle.objects.filter(hasSeen=True)
+        user_articles = UserArticle.objects.filter(hasSeen=False)
         for user_article in user_articles:
             user_art_dict[user_article.user].append(user_article.article)
             for user, articles in user_art_dict.items():
+                print('sending email here', user.email)
                 email_ser = EmailService(user.email,'test',articles)
                 email_ser.send()
     return Response({"message": "Sent email successfully"}, status=status.HTTP_200_OK)
