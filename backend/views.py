@@ -3,7 +3,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework import status
 from backend.models import Keywords, Users, UserKeyword, UserArticle, Articles
-from backend.serializers import ArticlesSerializer, UserArticleSerializer
+from backend.serializers import ArticlesSerializer, UserArticleSerializer, KeywordsSerializer
 from django.http.response import JsonResponse
 import ast
 from backend.ProcessData import ProcessData
@@ -16,9 +16,10 @@ processData = ProcessData()
 def add_user(request):
     if request.method == 'POST':
         print("Receive POST request")
+        uid = request.data['uid'] 
         fname, lname = request.data['firstname'], request.data['lastname']
         email = request.data['email']
-        saved_user = Users.objects.create(firstname=fname, lastname=lname, email=email)
+        saved_user = Users.objects.create(id=uid,firstname=fname, lastname=lname, email=email)
 
         keywords = ast.literal_eval(request.data['keywords'])
 
@@ -44,6 +45,17 @@ def add_keyword(request, user_id):
             saved_keyword = Keywords.objects.create(name=keyword)
             saved_userkeyword = UserKeyword.objects.create(user=user, keyword=saved_keyword, isActive=True)
         return Response({"message": "Keyword added successfully"}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_keywords(request, user_id):
+    user = Users.objects.get(pk=user_id)
+    user_keywords = UserKeyword.objects.filter(user=user)
+    print('user keywords = ', user_keywords)
+    keyword_ids = user_keywords.values_list('keyword_id', flat=True)
+    keywords = Keywords.objects.filter(id__in=keyword_ids)
+    keywords_serializer = KeywordsSerializer(keywords, many=True)
+    return JsonResponse(keywords_serializer.data, safe=False, status=status.HTTP_200_OK)
+
 
 @api_view(['PUT'])
 def delete_keyword(request, user_id, keyword_id):
